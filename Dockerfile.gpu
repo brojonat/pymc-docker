@@ -45,7 +45,7 @@ RUN conda install -c conda-forge mamba \
     && conda clean --all -f -y
 
 RUN /bin/bash -c ". activate pymc && \
-    pip install --upgrade pip && \ 
+    pip install --upgrade pip && \
     pip install --upgrade 'jax[cuda]' -f https://storage.googleapis.com/jax-releases/jax_releases.html"
 
 RUN mkdir /workspace
@@ -57,6 +57,14 @@ USER jovyan
 SHELL ["/bin/bash","-c"]
 RUN echo "conda activate pymc" >> ~/.bashrc && \
     source ~/.bashrc
+
+# TODO: uncomment after verifying this actually works
+# IMPORTANT: runn the install in the conda env
+# COPY requirements.txt .
+# RUN conda run -n pymc pip install -r requirements.txt
+# RUN conda run -n pymc pip install ipykernel
+# RUN conda run -n pymc python -m ipykernel install --user --name pymc --display-name "pymc"
+
 
 # For running from jupyter notebook
 EXPOSE 8888

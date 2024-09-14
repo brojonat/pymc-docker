@@ -43,6 +43,11 @@ SHELL ["/bin/bash","-c"]
 RUN echo "conda activate pymc" >> ~/.bashrc && \
     source ~/.bashrc
 
+# IMPORTANT: runn the install in the conda env
+COPY requirements.txt .
+RUN conda run -n pymc pip install -r requirements.txt
+RUN conda run -n pymc python -m ipykernel install --user --name pymc --display-name "pymc"
+
 # For running from jupyter notebook
 EXPOSE 8888
 CMD ["conda", "run", "--no-capture-output", "-n", "pymc", "jupyter","notebook","--ip=0.0.0.0","--port=8888","--no-browser","--allow-root"]
